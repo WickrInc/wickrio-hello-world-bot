@@ -42,16 +42,19 @@ process.on('uncaughtException', exitHandler.bind(null, {
 }));
 
 return new Promise(async (resolve, reject) => {
-  if (process.argv[2] === undefined) {
-    var client = await fs.readFileSync('client_bot_username.txt', 'utf-8');
-    client = client.trim();
-    var response = await addon.clientInit(client);
-    resolve(response);
-  } else {
-    var response = await addon.clientInit(process.argv[2]);
-    resolve(response);
+  try {
+    if (process.argv[2] === undefined) {
+      var client = await fs.readFileSync('client_bot_username.txt', 'utf-8');
+      client = client.trim();
+      var response = await addon.clientInit(client);
+      resolve(response);
+    } else {
+      var response = await addon.clientInit(process.argv[2]);
+      resolve(response);
+    }
+  } catch (err) {
+    return console.log(err);
   }
-
 }).then(result => {
   console.log(result);
 
@@ -99,8 +102,11 @@ return new Promise(async (resolve, reject) => {
     "We take your privacy & security very seriously, learn more: www.wickr.com/security.\n\n" +
     "Source code https://github.com/WickrInc/wickr-crypto-c. FAQ www.wickr.com/faq"
   ];
-
-  addon.cmdStartAsyncRecvMessages(listen);
+  try {
+    addon.cmdStartAsyncRecvMessages(listen);
+  } catch (err) {
+    return console.log(err);
+  }
   var wickrUsers = [];
 
   function listen(message) {
