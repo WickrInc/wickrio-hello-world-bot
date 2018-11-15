@@ -53,7 +53,8 @@ return new Promise(async (resolve, reject) => {
       resolve(response);
     }
   } catch (err) {
-    return console.log(err);
+    console.log(err);
+    process.exit();
   }
 }).then(result => {
   console.log(result);
@@ -105,7 +106,8 @@ return new Promise(async (resolve, reject) => {
   try {
     addon.cmdStartAsyncRecvMessages(listen);
   } catch (err) {
-    return console.log(err);
+    console.log(err);
+    process.exit();
   }
   var wickrUsers = [];
 
@@ -127,7 +129,7 @@ return new Promise(async (resolve, reject) => {
     current = getIndex(vGroupID);
     if (current <= 9 && current != -1) {
       try {
-        var csrm = addon.cmdSendRoomMessage(vGroupID, responseMessageList[current], '100', '60');
+        var csrm = addon.cmdSendRoomMessage(vGroupID, responseMessageList[current]);
       } catch (err) {
         console.log(err);
       }

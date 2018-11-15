@@ -1,15 +1,15 @@
 {
   "name": "wickrio-hello-world-bot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wickr's own Hello World Bot",
   "main": "hello_world_bot.js",
   "dependencies": {
     "pm2": "^3.2.2",
     "prompt": "^1.0.0",
-    "wickrio_addon": "^4.64.2"
+    "wickrio_addon": "^4.66.2"
   },
   "scripts": {
-    "start": "pm2 start hello_world_bot.js",
+    "start": "pm2 start hello_world_bot.js --update-env",
     "stop": "pm2 delete hello_world_bot.js"
   },
   "repository": {
