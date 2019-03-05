@@ -6,19 +6,12 @@ module.exports = addon;
 process.stdin.resume(); //so the program will not close instantly
 
 function exitHandler(options, err) {
-  if (err) {
-    console.log('Error:', err.stack);
-    addon.cmdStopAsyncRecvMessages();
-    console.log(addon.closeClient());
-    process.exit();
-  }
-  if (options.exit) {
-    addon.cmdStopAsyncRecvMessages();
-    console.log(addon.closeClient());
+  console.log(addon.cmdStopAsyncRecvMessages());
+  console.log(addon.closeClient());
+  if (err || options.exit) {
+    console.log('Exit Error:', err.stack);
     process.exit();
   } else if (options.pid) {
-    addon.cmdStopAsyncRecvMessages();
-    console.log(addon.closeClient());
     process.kill(process.pid);
   }
 }
@@ -44,17 +37,16 @@ process.on('uncaughtException', exitHandler.bind(null, {
 return new Promise(async (resolve, reject) => {
   try {
     if (process.argv[2] === undefined) {
-      var client = await fs.readFileSync('client_bot_username.txt', 'utf-8');
+      var client = fs.readFileSync('client_bot_username.txt', 'utf-8');
       client = client.trim();
-      var response = await addon.clientInit(client);
+      var response = addon.clientInit(client);
       resolve(response);
     } else {
-      var response = await addon.clientInit(process.argv[2]);
+      var response = addon.clientInit(process.argv[2]);
       resolve(response);
     }
   } catch (err) {
-    console.log(err);
-    process.exit();
+    return console.log(err);
   }
 }).then(result => {
   console.log(result);
@@ -106,8 +98,7 @@ return new Promise(async (resolve, reject) => {
   try {
     addon.cmdStartAsyncRecvMessages(listen);
   } catch (err) {
-    console.log(err);
-    process.exit();
+    return console.log(err);
   }
   var wickrUsers = [];
 
@@ -129,7 +120,7 @@ return new Promise(async (resolve, reject) => {
     current = getIndex(vGroupID);
     if (current <= 9 && current != -1) {
       try {
-        var csrm = addon.cmdSendRoomMessage(vGroupID, responseMessageList[current]);
+        var csrm = addon.cmdSendRoomMessage(vGroupID, responseMessageList[current], '100', '60');
       } catch (err) {
         console.log(err);
       }
