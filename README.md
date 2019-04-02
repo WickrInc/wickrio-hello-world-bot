@@ -1,4 +1,4 @@
-# WickrIO Hello World Bot
+# Wickr IO Hello World Bot
 
 Wickr's Hello World Bot
 

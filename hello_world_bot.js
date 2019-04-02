@@ -1,18 +1,28 @@
-var addon = require('wickrio_addon');
+const WickrIOAPI = require('wickrio_addon');
+const WickrIOBotAPI = require('wickrio-bot-api');
+const WickrUser = WickrIOBotAPI.WickrUser;
 var fs = require('fs');
 
-process.title = "helloWorldBot";
-module.exports = addon;
 process.stdin.resume(); //so the program will not close instantly
 
-function exitHandler(options, err) {
-  console.log(addon.cmdStopAsyncRecvMessages());
-  console.log(addon.closeClient());
-  if (err || options.exit) {
-    console.log('Exit Error:', err.stack);
-    process.exit();
-  } else if (options.pid) {
-    process.kill(process.pid);
+var bot, bot_username;
+var tokens = JSON.parse(process.env.tokens);
+
+async function exitHandler(options, err) {
+  try {
+    var closed = await bot.close();
+    console.log(closed);
+    if (err) {
+      console.log("Exit reason:", err);
+      process.exit();
+    }
+    if (options.exit) {
+      process.exit();
+    } else if (options.pid) {
+      process.kill(process.pid);
+    }
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -36,19 +46,28 @@ process.on('uncaughtException', exitHandler.bind(null, {
 
 return new Promise(async (resolve, reject) => {
   try {
+    var status;
     if (process.argv[2] === undefined) {
-      var client = fs.readFileSync('client_bot_username.txt', 'utf-8');
-      client = client.trim();
-      var response = addon.clientInit(client);
-      resolve(response);
+      bot_username = tokens.BOT_USERNAME.value;
+      bot = new WickrIOBotAPI.WickrIOBot();
+      status = await bot.start(bot_username)
+      resolve(status);
     } else {
-      var response = addon.clientInit(process.argv[2]);
-      resolve(response);
+      bot = new WickrIOBotAPI.WickrIOBot();
+      status = await bot.start(process.argv[2]);
+      resolve(status);
     }
+
   } catch (err) {
     return console.log(err);
   }
-}).then(result => {
+}).then(async result => {
+  if (!result) {
+    exitHandler(null, {
+      exit: true,
+      reason: 'Client not able to start'
+    });
+  }
   console.log(result);
 
   var responseMessageList = [
@@ -96,55 +115,51 @@ return new Promise(async (resolve, reject) => {
     "Source code https://github.com/WickrInc/wickr-crypto-c. FAQ www.wickr.com/faq"
   ];
   try {
-    addon.cmdStartAsyncRecvMessages(listen);
+    await bot.startListening(listen); //Passes a callback function that will receive incoming messages into the bot client
   } catch (err) {
     return console.log(err);
   }
   var wickrUsers = [];
 
   function listen(message) {
-    var parsedData = JSON.parse(message);
-    var vGroupID = parsedData.vgroupid;
-    var location = find(vGroupID);
-    if (location === -1) {
-      wickrUsers.push({
-        vGroupID: vGroupID,
-        index: 0
+    var wickrUser;
+    var parsedMessage = bot.parseMessage(message); //Parses an incoming message and returns and object with command, argument, vGroupID and Sender fields
+    if (!parsedMessage) {
+      return;
+    }
+    var vGroupID = parsedMessage.vgroupid;
+    var userEmail = parsedMessage.userEmail;
+    var convoType = parsedMessage.convoType;
+    var personal_vGroupID = "";
+    if (convoType === 'personal')
+      personal_vGroupID = vGroupID;
+    var found = bot.getUser(userEmail); //Look up user by their wickr email
+    if (!found) { //Check if a user exists in the database
+      wickrUser = new WickrUser(userEmail, {
+        index: 0,
+        personal_vGroupID: personal_vGroupID,
+        command: "",
+        argument: ""
       });
+      var added = bot.addUser(wickrUser); //Add a new user to the database
     }
-    var current = getIndex(vGroupID);
-    if (current > 9) {
-      location = find(vGroupID);
-      wickrUsers[location].index = 0;
+    user = bot.getUser(userEmail);
+    var current = user.index;
+    if (current > responseMessageList.length - 1) {
+      user.index = 0;
     }
-    current = getIndex(vGroupID);
-    if (current <= 9 && current != -1) {
+    current = user.index;
+    if (current < responseMessageList.length && current != -1) {
       try {
-        var csrm = addon.cmdSendRoomMessage(vGroupID, responseMessageList[current], '100', '60');
+        var csrm = WickrIOAPI.cmdSendRoomMessage(vGroupID, responseMessageList[current]);
+        console.log(csrm);
       } catch (err) {
         console.log(err);
       }
-      location = find(vGroupID);
-      wickrUsers[location].index = current + 1;
+      user.index = current + 1;
     }
   }
 
-
-  function find(vGroupID) {
-    for (var i = 0; i < wickrUsers.length; i++) {
-      if (wickrUsers[i].vGroupID[0].localeCompare(vGroupID[0]) === 0)
-        return i;
-    }
-    return -1;
-  }
-
-  function getIndex(vGroupID) {
-    for (var i = 0; i < wickrUsers.length; i++) {
-      if (wickrUsers[i].vGroupID[0] === vGroupID[0]) {
-        return wickrUsers[i].index;
-      }
-    }
-  }
 }).catch(error => {
   console.log(error);
 });
