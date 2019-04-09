@@ -7,7 +7,7 @@ var fs = require('fs');
 
 process.stdin.resume(); //so the program will not close instantly
 
-var bot, bot_username;
+var bot_username;
 var tokens = JSON.parse(process.env.tokens);
 
 async function exitHandler(options, err) {
