@@ -1,6 +1,6 @@
 {
   "name": "wickrio-hello-world-bot",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Wickr's own Hello World Bot",
   "main": "hello_world_bot.js",
   "dependencies": {
@@ -17,5 +17,15 @@
     "type": "git",
     "url": "https://github.com/WickrInc/wickrio-hello-world-bot"
   },
+  "keywords": [
+    "wickr",
+    "wickrio",
+    "wickrbot",
+    "bot",
+    "bots",
+    "secure",
+    "messaging",
+    "api"
+  ],
   "database": true
 }
