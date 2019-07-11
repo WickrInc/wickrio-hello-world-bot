@@ -1,5 +1,8 @@
 # Wickr IO Hello World Bot
 This integration responds to users messages with canned responses, each response will be sent out in a well defined sequence associated with the Wickr user sending to the Wickr IO client. The Wickr IO Hello World integration is a sample integration, which can be used as a base to create new custom integrations.
+Note: This is a good template to edit and create a custom chatbot for Wickr
+
+To get started, you would need to setup your system, download and install Docker and run the WickrIO Docker container. Full instructions on how to do so are available here: https://wickrinc.github.io/wickrio-docs/#wickr-io-getting-started
 
 ## Configuration:
 Wickr IO integrations are configured by running the configure.sh file,
