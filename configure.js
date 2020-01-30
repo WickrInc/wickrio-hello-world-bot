@@ -48,6 +48,7 @@ async function main() {
       var cp = execSync('cp processes.json processes_backup.json');
       if (dataParsed.apps[0].env.tokens.BOT_USERNAME.value !== undefined) {
         var newName = "WickrIO-Hello-World-Bot_" + dataParsed.apps[0].env.tokens.BOT_USERNAME.value;
+
       } else {
         var newName = "WickrIO-Hello-World-Bot";
       }
@@ -86,6 +87,7 @@ async function inputTokens() {
       //you would need to add another if statement block below with the respectful config value name
       if (token === 'BOT_USERNAME' && process.env.BOT_USERNAME !== undefined) {
         var input = token + '=' + process.env.BOT_USERNAME;
+
         config.push(input);
         i++;
         return recursivePrompt();
@@ -147,6 +149,7 @@ async function inputTokens() {
           "encrypted": false
         };
         newObjectResult.BOT_USERNAME = obj;
+
         continue;
       } else if (key === 'DATABASE_ENCRYPTION_KEY' && process.env.DATABASE_ENCRYPTION_KEY !== undefined) {
         var obj = {
@@ -171,6 +174,7 @@ async function inputTokens() {
         var newName = "WickrIO-Hello-World-Bot_" + process.env.BOT_USERNAME;
       } else if (newObjectResult.BOT_USERNAME !== undefined) {
         var newName = "WickrIO-Hello-World-Bot_" + newObjectResult.BOT_USERNAME.value;
+
       } else {
         var newName = "WickrIO-Hello-World-Bot";
       }
