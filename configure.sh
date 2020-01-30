@@ -9,4 +9,11 @@ if [ -n "$1" ]; then
     . "$1"
   fi
 fi
-node configure.js $CLIENT_NAME
+
+if [ -z "$CLIENT_NAME" ];
+then
+  node configure.js
+else
+  WICKRIO_BOT_NAME=$CLIENT_NAME node configure.js
+fi
+
