@@ -5,7 +5,7 @@ const dataStringify = JSON.stringify(processes);
 const dataParsed = JSON.parse(dataStringify);
 const {exec, execSync, execFileSync} = require('child_process');
 //Add any tokens(as strings separated by commas) you want to prompt for in the configuration process here
-const tokens = ['WICKRIO_BOT_NAME', 'DATABASE_ENCRYPTION_KEY'];
+const tokens = ['BOT_USERNAME', 'DATABASE_ENCRYPTION_KEY'];
 
 prompt.colors = false;
 
@@ -46,8 +46,8 @@ async function main() {
   if (processConfigured()) {
     try {
       var cp = execSync('cp processes.json processes_backup.json');
-      if (dataParsed.apps[0].env.tokens.WICKRIO_BOT_NAME.value !== undefined) {
-        var newName = "WickrIO-Hello-World-Bot_" + dataParsed.apps[0].env.tokens.WICKRIO_BOT_NAME.value;
+      if (dataParsed.apps[0].env.tokens.BOT_USERNAME.value !== undefined) {
+        var newName = "WickrIO-Hello-World-Bot_" + dataParsed.apps[0].env.tokens.BOT_USERNAME.value;
       } else {
         var newName = "WickrIO-Hello-World-Bot";
       }
@@ -84,8 +84,8 @@ async function inputTokens() {
       }
       //If added another config value name to the tokens array in line 52,
       //you would need to add another if statement block below with the respectful config value name
-      if (token === 'WICKRIO_BOT_NAME' && process.env.WICKRIO_BOT_NAME !== undefined) {
-        var input = token + '=' + process.env.WICKRIO_BOT_NAME;
+      if (token === 'BOT_USERNAME' && process.env.BOT_USERNAME !== undefined) {
+        var input = token + '=' + process.env.BOT_USERNAME;
         config.push(input);
         i++;
         return recursivePrompt();
@@ -141,12 +141,12 @@ async function inputTokens() {
     for (var key in newObjectResult) {
       //If added another config value name to the tokens array in line 52,
       //you would need to add another if statement block below with the respectful config value name
-      if (key === 'WICKRIO_BOT_NAME' && process.env.WICKRIO_BOT_NAME !== undefined) {
+      if (key === 'BOT_USERNAME' && process.env.BOT_USERNAME !== undefined) {
         var obj = {
-          "value": process.env.WICKRIO_BOT_NAME,
+          "value": process.env.BOT_USERNAME,
           "encrypted": false
         };
-        newObjectResult.WICKRIO_BOT_NAME = obj;
+        newObjectResult.BOT_USERNAME = obj;
         continue;
       } else if (key === 'DATABASE_ENCRYPTION_KEY' && process.env.DATABASE_ENCRYPTION_KEY !== undefined) {
         var obj = {
@@ -167,10 +167,10 @@ async function inputTokens() {
     }
     try {
       var cp = execSync('cp processes.json processes_backup.json');
-      if (process.env.WICKRIO_BOT_NAME !== undefined) {
-        var newName = "WickrIO-Hello-World-Bot_" + process.env.WICKRIO_BOT_NAME;
-      } else if (newObjectResult.WICKRIO_BOT_NAME !== undefined) {
-        var newName = "WickrIO-Hello-World-Bot_" + newObjectResult.WICKRIO_BOT_NAME.value;
+      if (process.env.BOT_USERNAME !== undefined) {
+        var newName = "WickrIO-Hello-World-Bot_" + process.env.BOT_USERNAME;
+      } else if (newObjectResult.BOT_USERNAME !== undefined) {
+        var newName = "WickrIO-Hello-World-Bot_" + newObjectResult.BOT_USERNAME.value;
       } else {
         var newName = "WickrIO-Hello-World-Bot";
       }
@@ -211,8 +211,8 @@ function getCurrentValues()
         return newObjectResult;
     }
 
-    if (pjson.apps[0].env.tokens.WICKRIO_BOT_NAME !== undefined) {
-      newObjectResult['WICKRIO_BOT_NAME'] = pjson.apps[0].env.tokens.WICKRIO_BOT_NAME.value;
+    if (pjson.apps[0].env.tokens.BOT_USERNAME !== undefined) {
+      newObjectResult['BOT_USERNAME'] = pjson.apps[0].env.tokens.BOT_USERNAME.value;
     }
     if (pjson.apps[0].env.tokens.DATABASE_ENCRYPTION_KEY !== undefined) {
       newObjectResult['DATABASE_ENCRYPTION_KEY'] = pjson.apps[0].env.tokens.DATABASE_ENCRYPTION_KEY.value;
@@ -241,7 +241,7 @@ function processConfigured()
         return false;
     }
 
-    if (pjson.apps[0].env.tokens.WICKRIO_BOT_NAME === undefined) {
+    if (pjson.apps[0].env.tokens.BOT_USERNAME === undefined) {
         return false;
     }
     return true;
