@@ -8,7 +8,6 @@ var fs = require('fs');
 process.stdin.resume(); //so the program will not close instantly
 
 var bot_username;
-var tokens = JSON.parse(process.env.tokens);
 
 async function exitHandler(options, err) {
   try {
@@ -34,31 +33,8 @@ process.on('SIGUSR2', exitHandler.bind(null, {pid: true}));
 //catches uncaught exceptions
 process.on('uncaughtException', exitHandler.bind(null, {exit: true}));
 
-return new Promise(async (resolve, reject) => {
-  try {
-    var status;
-    if (process.argv[2] === undefined) {
-      bot_username = tokens.BOT_USERNAME.value;
-      status = await bot.start(bot_username)
-      resolve(status);
-    } else {
-      status = await bot.start(process.argv[2]);
-      resolve(status);
-    }
 
-  } catch (err) {
-    return console.log(err);
-  }
-}).then(async result => {
-  if (!result) {
-    exitHandler(null, {
-      exit: true,
-      reason: 'Client not able to start'
-    });
-  }
-  console.log(result);
-
-  var responseMessageList = [
+var responseMessageList = [
     "Hey there! Thanks for messaging me! I have a few helpful but random tips I can share in response to your messages, " + "so please bear with me☺ If you have more questions than I have answers, head to Settings > Support in Wickr Pro. " + "Way to go to protect your privacy!",
 
     "JavaScript API:\n\n" + "Have an idea for a cool integration for wickr? you can now implement it using our brand new Node.js API " + "It is also possible to code integrations in different languages using our WickrIO REST API. For more information visit https://github.com/WickrInc\n\n",
@@ -76,17 +52,36 @@ return new Promise(async (resolve, reject) => {
     "Passwords\n\n" + "Important to know: there is no password reset on Wickr Pro – we don't know who you are which prevents us from " + "verifying you to reset your password.\n\n" + "So please remember your password☺",
 
     "Privacy\n\n" + "We built Wickr Pro to provide private communications to everyone.\n" + "We take your privacy & security very seriously, learn more: www.wickr.com/security.\n\n" + "Source code https://github.com/WickrInc/wickr-crypto-c. FAQ www.wickr.com/faq"
-  ];
+];
+
+
+async function main() {
   try {
-    await bot.startListening(listen); //Passes a callback function that will receive incoming messages into the bot client
+    var tokens = JSON.parse(process.env.tokens);
+    var status = await bot.start(tokens.WICKRIO_BOT_NAME.value)
+    if (!status) {
+      exitHandler(null, {
+        exit: true,
+        reason: 'Client not able to start'
+      });
+    }
+
+    //Passes a callback function that will receive incoming messages into the bot client
+    bot.startListening(listen);
+
   } catch (err) {
     return console.log(err);
   }
-  var wickrUsers = [];
+}
 
-  function listen(message) {
+
+
+
+
+function listen(message) {
     var wickrUser;
-    var parsedMessage = bot.parseMessage(message); //Parses an incoming message and returns and object with command, argument, vGroupID and Sender fields
+    //Parses an incoming message and returns and object with command, argument, vGroupID and Sender fields
+    var parsedMessage = bot.parseMessage(message);
     if (!parsedMessage) {
       return;
     }
@@ -120,8 +115,9 @@ return new Promise(async (resolve, reject) => {
       }
       user.index = current + 1;
     }
-  }
+}
 
-}).catch(error => {
-  console.log(error);
-});
+
+
+
+main();
