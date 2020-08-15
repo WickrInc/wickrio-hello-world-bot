@@ -1,8 +1,8 @@
 {
   "name": "wickrio-hello-world-bot",
-  "version": "5.54.1",
+  "version": "5.62.3",
   "description": "Wickr's own Hello World Bot",
-  "main": "hello_world_bot.js",
+  "main": "./build/index.js",
   "dependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
