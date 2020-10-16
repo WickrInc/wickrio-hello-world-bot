@@ -44,10 +44,11 @@ main();
 
 async function main()
 {
+    const tokens = require('./configTokens.json')
     var fullName = process.cwd() + "/processes.json";
-    wickrIOConfigure = new WickrIOBotAPI.WickrIOConfigure([], fullName);
+    wickrIOConfigure = new WickrIOBotAPI.WickrIOConfigure(tokens.tokens, fullName);
 
-    await wickrIOConfigure.configureYourBot("WickrIO-Hello-World-Bot");
+    await wickrIOConfigure.configureYourBot(tokens.integration);
     process.exit();
 }
 
