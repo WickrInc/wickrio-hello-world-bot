@@ -1,6 +1,6 @@
 {
   "name": "wickrio-hello-world-bot",
-  "version": "5.79.1",
+  "version": "5.82.1",
   "description": "Wickr's own Hello World Bot",
   "main": "hello_world_bot.js",
   "dependencies": {
@@ -8,14 +8,14 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "helmet": "^3.20.0",
-    "pm2": "^4.5.5",
     "prompt": "^1.0.0",
     "dotenv": "^8.2.0",
-    "wickrio-bot-api": "5.79.x"
+    "wickrio-bot-api": "5.82.x"
   },
   "scripts": {
-    "start": "pm2 start processes.json --update-env",
-    "stop": "pm2 delete processes.json"
+    "start": "forever start -m 5 ./forever.json",
+    "stop": "forever stopall",
+    "restart": "forever restartall"
   },
   "repository": {
     "type": "git",
