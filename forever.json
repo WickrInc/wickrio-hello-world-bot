@@ -1,0 +1,10 @@
+{
+  "uid": "wickrio-hello-world-bot",
+  "append": true,
+  "watch": false,
+  "script": "./hello_world_bot.js",
+  "sourceDir": ".",
+  "logFile": "",
+  "outFile": "",
+  "errFile": ""
+}
