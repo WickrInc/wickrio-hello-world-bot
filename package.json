@@ -13,7 +13,7 @@
     "wickrio-bot-api": "5.82.x"
   },
   "scripts": {
-    "start": "/etc/init.d/mysql start && forever start -m 1 ./forever.json",
+    "start": "forever start -m 5 ./forever.json",
     "stop": "forever stopall",
     "restart": "forever restartall"
   },
