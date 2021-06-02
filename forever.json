@@ -4,7 +4,7 @@
   "watch": false,
   "script": "./hello_world_bot.js",
   "sourceDir": ".",
-  "logFile": "",
-  "outFile": "",
-  "errFile": ""
+  "logFile": "./log.output",
+  "outFile": "./outfile.output",
+  "errFile": "./err.output"
 }
