@@ -1,6 +1,6 @@
 {
-  "name": "wickrio-hello-world-bot",
-  "version": "6.26.1",
+  "name": "@wickr-sample-integrations/wickrio-hello-world-bot",
+  "version": "6.48.1",
   "description": "Wickr's own Hello World Bot",
   "main": "hello_world_bot.js",
   "dependencies": {
@@ -10,7 +10,7 @@
     "helmet": "^3.20.0",
     "prompt": "^1.0.0",
     "dotenv": "^8.2.0",
-    "wickrio-bot-api": "6.26.x"
+    "wickrio-bot-api": "7.1.x"
   },
   "scripts": {
     "start": "forever start -m 5 ./forever.json",
