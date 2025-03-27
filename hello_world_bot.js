@@ -80,7 +80,7 @@ async function main() {
 
 
 
-function listen(message) {
+async function listen(message) {
     var wickrUser;
     //Parses an incoming message and returns and object with command, argument, vGroupID and Sender fields
     var parsedMessage = bot.parseMessage(message);
@@ -110,7 +110,7 @@ function listen(message) {
     current = user.index;
     if (current < responseMessageList.length && current != -1) {
       try {
-        var csrm = WickrIOAPI.cmdSendRoomMessage(vGroupID, responseMessageList[current]);
+        var csrm = await WickrIOAPI.cmdSendRoomMessage(vGroupID, responseMessageList[current]);
         console.log(csrm);
       } catch (err) {
         console.log(err);
