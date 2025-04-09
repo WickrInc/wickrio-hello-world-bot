@@ -1,7 +1,7 @@
-const WickrIOAPI = require('wickrio_addon');
 const WickrIOBotAPI = require('wickrio-bot-api');
 const WickrUser = WickrIOBotAPI.WickrUser;
 const bot = new WickrIOBotAPI.WickrIOBot();
+const WickrIOAPI = bot.apiService().WickrIOAPI;
 
 var fs = require('fs');
 
