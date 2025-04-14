@@ -10,7 +10,7 @@
     "helmet": "^3.20.0",
     "prompt": "^1.0.0",
     "dotenv": "^8.2.0",
-    "wickrio-bot-api": "5.113.x"
+    "wickrio-bot-api": "7.1.x"
   },
   "scripts": {
     "start": "forever start -m 5 ./forever.json",

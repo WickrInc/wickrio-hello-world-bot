@@ -17,8 +17,7 @@ if [ -n "$1" ]; then
 fi
 
 if [ -f "/usr/local/nvm/nvm.sh" ]; then
-  . /usr/local/nvm/nvm.sh
-  nvm use 16
+  . /usr/local/nvm/nvm.sh  
 fi
 
 if [ -z "$CLIENT_NAME" ];
