@@ -1,6 +1,6 @@
 {
   "name": "@wickr-sample-integrations/wickrio-hello-world-bot",
-  "version": "6.48.4",
+  "version": "6.56.0",
   "description": "Wickr's own Hello World Bot",
   "main": "hello_world_bot.js",
   "dependencies": {
