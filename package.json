@@ -1,15 +1,13 @@
 {
   "name": "@wickr-sample-integrations/wickrio-hello-world-bot",
-  "version": "6.60",
+  "version": "6.66.0",
   "description": "Wickr's own Hello World Bot",
   "main": "hello_world_bot.js",
   "dependencies": {
-    "fs": "0.0.2",
     "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "helmet": "^3.20.0",
-    "prompt": "^1.0.0",
     "dotenv": "^8.2.0",
+    "fs": "0.0.2",
+    "prompt": "^1.0.0",
     "wickrio-bot-api": "7.1.x"
   },
   "scripts": {
